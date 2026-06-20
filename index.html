@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب علامات نظام BTEC - مدرسة صلاح الدين الأيوبي</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            padding-bottom: 70px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px double #34495e;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 5px 0;
+        }
+        .header h2 {
+            font-size: 20px;
+            color: #16a085;
+            margin: 5px 0;
+        }
+        .header h3 {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin: 5px 0;
+            font-weight: normal;
+        }
+        .section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .form-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group div {
+            flex: 1;
+        }
+        @media (max-width: 600px) {
+            .form-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 2px solid #bdc3c7;
+            background-color: #fff;
+            outline: none;
+            font-family: inherit;
+        }
+        select:focus {
+            border-color: #3498db;
+        }
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        .subject-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            gap: 15px;
+        }
+        .subject-info {
+            max-width: 70%;
+        }
+        .subject-name {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        .subject-hours {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+        .grade-select {
+            width: 130px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #bdc3c7;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #219150;
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #e8f8f5;
+            border: 2px dashed #2cc185;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        .result-box h2 {
+            margin: 0;
+            color: #16a085;
+            font-size: 20px;
+        }
+        .score {
+            font-size: 42px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+        .footer-credit {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>مديرية التربية والتعليم لمنطقة معان</h1>
+        <h2>مدرسة صلاح الدين الأيوبي</h2>
+        <h3>نظام احتساب علامات برنامج BTEC المعتمد</h3>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">الخطوة الأولى: البيانات الدراسية للمستخدم</div>
+        <div class="form-group">
+            <div>
+                <label for="specialty">اختر التخصص الدراسي:</label>
+                <select id="specialty" onchange="handleSelectionChange()">
+                    <option value="">-- اختر التخصص --</option>
+                    <option value="veh_tech">تكنولوجيا المركبات الكهربائية</option>
+                    <option value="elec_eng">الهندسة الكهربائية</option>
+                    <option value="mech_eng">الهندسة الميكانيكية</option>
+                    <option value="agri">الزراعة</option>
+                    <option value="const">الإنشاءات والبيئة العمرانية</option>
+                </select>
+            </div>
+            <div>
+                <label for="grade">اختر الصف الحالي:</label>
+                <select id="grade" onchange="handleSelectionChange()">
+                    <option value="">-- اختر الصف --</option>
+                    <option value="11">الحادي عشر (الأول ثانوي)</option>
+                    <option value="12">الثاني عشر (التوجيهي)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="subjectsSection" class="section" style="display: none;">
+        <div class="section-title" id="subjectsTitle">الخطوة الثانية: حدد علامات المواد الدراسية الظاهرة أدناه</div>
+        <form id="btecForm">
+            <div class="subjects-grid" id="subjectsContainer">
+                </div>
+            <button type="button" onclick="calculateBtecScore()">احسب النتيجة النهائية</button>
+        </form>
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <h2 id="resultTitle">النتيجة التراكمية المحصلة</h2>
+        <div class="score" id="scoreResult">0 / 35</div>
+    </div>
+
+    <div class="footer-credit">تصميم المهندس عامر ابوجري</div>
+</div>
+
+<script>
+    // قاعدة البيانات الرسمية بعد تعديل تخصص الإنشاءات بدقة
+    const database = {
+        veh_tech: {
+            11: [
+                { name: "المبادئ الميكانيكية", hours: 60 },
+                { name: "المبادئ الكهربائية والإلكترونية", hours: 60 },
+                { name: "تصميم وتصنيع المنتجات في مجال الهندسة", hours: 120 },
+                { name: "تقديم العمليات الهندسية بأمان كفريق", hours: 60 },
+                { name: "أنظمة التصنيع الحديثة", hours: 60 }
+            ],
+            12: [
+                { name: "أنظمة التعليق والتوجيه والكبح في المركبات الخفيفة", hours: 60 },
+                { name: "تشغيل أنظمة نقل الحركة في المركبات الخفيفة وصيانتها", hours: 60 },
+                { name: "أنظمة الدفع في المركبات الكهربائية", hours: 60 },
+                { name: "محركات المركبات الكهربائية والهجينة", hours: 60 },
+                { name: "تشغيل أنظمة الاشعال الالكترونية في المركبات واختبارها", hours: 60 },
+                { name: "التنقل الكهربائي", hours: 60 }
+            ]
+        },
+        elec_eng: {
+            11: [
+                { name: "المبادئ الميكانيكية", hours: 60 },
+                { name: "المبادئ الكهربائية والإلكترونية", hours: 60 },
+                { name: "تصميم وتصنيع المنتجات في مجال الهندسة", hours: 120 },
+                { name: "تقديم العمليات الهندسية بأمان كفريق", hours: 60 },
+                { name: "مبادئ التجارة والجودة التطبيقية في الهندسة", hours: 60 }
+            ],
+            12: [
+                { name: "الأجهزة والدوائر الالكترونية", hours: 60 },
+                { name: "القياس والاختبار الالكتروني للدوائر", hours: 60 },
+                { name: "النظام الكهربائي ثلاثي الطور", hours: 60 },
+                { name: "الدوائر الالكترونية التناظرية", hours: 60 },
+                { name: "أجهزة التحكم المنطقي القابلة للبرمجة", hours: 60 },
+                { name: "الروبوتات الصناعية", hours: 60 }
+            ]
+        },
+        mech_eng: {
+            11: [
+                { name: "المبادئ الميكانيكية", hours: 60 },
+                { name: "المبادئ الكهربائية والإلكترونية", hours: 60 },
+                { name: "تصميم وتصنيع المنتجات في مجال الهندسة", hours: 120 },
+                { name: "تقديم العمليات الهندسية بأمان كفريق", hours: 60 },
+                { name: "مبادئ التجارة والجودة التطبيقية في الهندسة", hours: 60 }
+            ],
+            12: [
+                { name: "السلوك الميكانيكي للمواد المعدنية", hours: 60 },
+                { name: "السلوك الميكانيكي للمواد غير المعدنية", hours: 60 },
+                { name: "عمليات المعالجة الثانوية بالتصنيع", hours: 60 },
+                { name: "صيانة الأنظمة الميكانيكية", hours: 60 },
+                { name: "تقنية اللحام", hours: 60 },
+                { name: "عمليات التشغيل باستخدام التحكم الرقمي بالحاسوب في التصنيع", hours: 60 }
+            ]
+        },
+        agri: {
+            11: [
+                { name: "علوم النبات والتربة", hours: 60 },
+                { name: "مهارات إدارة المنشآت", hours: 60 },
+                { name: "فهم الإدارة البيئية", hours: 60 },
+                { name: "تحسينات شركات الأراضي", hours: 60 },
+                { name: "تربية حيوانات المزرعة", hours: 60 },
+                { name: "عمليات تشغيل ماكينات العمل في الأراضي", hours: 60 }
+            ],
+            12: [
+                { name: "الأنشطة التشغيلية والبيئية في مؤسسات الأراضي", hours: 60 },
+                { name: "أنظمة الإنتاج الحيواني", hours: 60 },
+                { name: "إنتاج المحاصيل البستانية", hours: 60 },
+                { name: "تطوير مؤسسة الأراضي", hours: 60 },
+                { name: "الأنشطة الروتينية لإدارة النباتات وإكثارها", hours: 60 },
+                { name: "إدارة الموارد المائية", hours: 60 }
+            ]
+        },
+        const: {
+            11: [
+                { name: "تكنولوجيا البناء", hours: 60 },
+                { name: "الاستدامة في مجال البناء", hours: 60 },
+                { name: "علوم البناء", hours: 60 },
+                { name: "إدارة المخاطر التجارية", hours: 60 },
+                { name: "الرفع المساحي في البناء", hours: 60 },
+                { name: "تصميم البناء", hours: 60 }
+            ],
+            12: [] // مصفوفة فارغة بناءً على البيانات المتوفرة للملف الحالي للإنشاءات
+        }
+    };
+
+    function handleSelectionChange() {
+        const spec = document.getElementById('specialty').value;
+        const grade = document.getElementById('grade').value;
+        const subSection = document.getElementById('subjectsSection');
+        const container = document.getElementById('subjectsContainer');
+        const resBox = document.getElementById('resultBox');
+
+        resBox.style.display = "none";
+
+        if (!spec || !grade) {
+            subSection.style.display = "none";
+            return;
+        }
+
+        container.innerHTML = "";
+        let listToShow = [];
+
+        if (grade === "11") {
+            listToShow = database[spec][11];
+            document.getElementById('subjectsTitle').innerText = "الخطوة الثانية: حدد علامات مواد الصف الحادي عشر المعتمدة فقط";
+        } else if (grade === "12") {
+            listToShow = [...database[spec][11], ...database[spec][12]];
+            document.getElementById('subjectsTitle').innerText = "الخطوة الثانية: حدد علامات مواد الصفين (الحادي عشر والثاني عشر معاً)";
+        }
+
+        if (listToShow.length === 0) {
+            container.innerHTML = "<p style='color:red; text-align:center; font-weight:bold;'>لا توجد مواد مضافة حالياً لهذه الخيارات.</p>";
+            subSection.style.display = "block";
+            return;
+        }
+
+        listToShow.forEach((sub, i) => {
+            container.innerHTML += `
+                <div class="subject-row">
+                    <div class="subject-info">
+                        <div class="subject-name">${i+1}. ${sub.name}</div>
+                        <div class="subject-hours">الساعات المعتمدة للمادة: ${sub.hours} ساعة</div>
+                    </div>
+                    <select class="grade-select" data-hours="${sub.hours}">
+                        <option value="-1">-- اختر العلامة --</option>
+                        <option value="100">D (100)</option>
+                        <option value="80">M (80)</option>
+                        <option value="60">P (60)</option>
+                    </select>
+                </div>
+            `;
+        });
+
+        subSection.style.display = "block";
+    }
+
+    function calculateBtecScore() {
+        const selects = document.querySelectorAll('.grade-select');
+        const grade = document.getElementById('grade').value;
+        
+        if(selects.length === 0) return;
+
+        let totalWeightedScore = 0;
+        let totalHours = 0;
+        let incomplete = false;
+
+        selects.forEach(select => {
+            let val = parseFloat(select.value);
+            let hours = parseFloat(select.getAttribute('data-hours'));
+
+            if (val < 0) {
+                incomplete = true;
+            } else {
+                totalWeightedScore += (val * hours);
+                totalHours += hours;
+            }
+        });
+
+        if (incomplete) {
+            alert("تنبيه: يرجى تحديد علامة (D أو M أو P) لجميع المواد المعروضة في القائمة لإتمام العملية بنجاح.");
+            return;
+        }
+
+        let finalResult = 0;
+        const resBox = document.getElementById('resultBox');
+        const scoreRes = document.getElementById('scoreResult');
+        const resTitle = document.getElementById('resultTitle');
+
+        if (grade === "11") {
+            finalResult = (totalWeightedScore / totalHours) * 0.35;
+            resTitle.innerText = "العلامة النهائية المحصلة من (35) للصف الحادي عشر:";
+            scoreRes.innerText = finalResult.toFixed(2) + " / 35";
+        } else {
+            finalResult = (totalWeightedScore / totalHours) * 0.70;
+            resTitle.innerText = "العلامة التراكمية الإجمالية للمواد المكتسبة بالصفين معاً من (70):";
+            scoreRes.innerText = finalResult.toFixed(2) + " / 70";
+        }
+
+        resBox.style.display = "block";
+        resBox.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
