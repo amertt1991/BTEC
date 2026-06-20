@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب معدل BTEC - مدرسة صلاح الدين الأيوبي</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        h3 {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+        .section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 25px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .specialty-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 2px solid #3498db;
+            background-color: #fff;
+            outline: none;
+            font-family: inherit;
+        }
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .subject-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+        }
+        .subject-number {
+            font-weight: bold;
+            color: #7f8c8d;
+            min-width: 25px;
+        }
+        .subject-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+        }
+        .subject-input:focus {
+            border-color: #3498db;
+        }
+        .grade-select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            background-color: #fff;
+            width: 110px;
+            font-family: inherit;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 25px;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        button:hover {
+            background-color: #219150;
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #e8f8f5;
+            border: 2px dashed #2cc185;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        .result-box h2 {
+            margin: 0;
+            color: #16a085;
+        }
+        .percentage {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+        .chosen-specialty-text {
+            color: #2980b9;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>مدرسة صلاح الدين الأيوبي</h1>
+    <h3>بوابة حساب معدلات نظام BTEC</h3>
+    
+    <div class="section">
+        <div class="section-title">أولاً: اختر التخصص الدراسي الرئيسي</div>
+        <select id="specialty" class="specialty-select" onchange="initForm()">
+            <option value="">-- اضغط هنا لاختيار تخصصك --</option>
+            <option value="هندسة">تخصص: الهندسة</option>
+            <option value="زراعة">تخصص: الزراعة</option>
+            <option value="أعمال">تخصص: الأعمال</option>
+            <option value="الشعر والجمال">تخصص: الشعر والجمال</option>
+            <option value="تكنولوجيا">تخصص: تكنولوجيا المعلومات</option>
+        </select>
+    </div>
+
+    <div id="subjectsSection" class="section" style="display: none;">
+        <div class="section-title">ثانياً: اكتب أسماء المواد لقطاع (<span id="specialtyName" class="chosen-specialty-text"></span>) ثم حدد علاماتها</div>
+        <form id="btecForm">
+            <div class="subjects-grid" id="subjectsContainer">
+                </div>
+
+            <div class="btn-container">
+                <button type="button" onclick="calculateAverage()">احسب المعدل النهائي</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <h2>المعدل النهائي العام لتخصص <span id="resultSpecialty"></span></h2>
+        <div class="percentage" id="averageResult">0%</div>
+    </div>
+</div>
+
+<script>
+    // دالة تهيئة النماذج عند اختيار التخصص
+    function initForm() {
+        const specialtySelect = document.getElementById('specialty');
+        const subjectsSection = document.getElementById('subjectsSection');
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const specialtyNameSpan = document.getElementById('specialtyName');
+        const resultBox = document.getElementById('resultBox');
+        
+        // إخفاء نتيجة الحساب السابقة
+        resultBox.style.display = "none";
+
+        if (specialtySelect.value === "") {
+            subjectsSection.style.display = "none";
+            return;
+        }
+
+        // عرض اسم التخصص المختار في العنوان
+        specialtyNameSpan.innerText = specialtySelect.value;
+        subjectsContainer.innerHTML = ""; // تفريغ الخانات القديمة
+
+        // توليد 12 خانة تتيح للطالب كتابة اسم المادة واختيار علامتها
+        for (let i = 1; i <= 12; i++) {
+            subjectsContainer.innerHTML += `
+                <div class="subject-row">
+                    <span class="subject-number">${i}</span>
+                    <input type="text" class="subject-input" placeholder="اكتب اسم المادة هنا..." required>
+                    <select class="grade-select">
+                        <option value="-1">العلامة</option>
+                        <option value="100">D (100)</option>
+                        <option value="80">M (80)</option>
+                        <option value="60">P (60)</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // إظهار قسم إدخال المواد
+        subjectsSection.style.display = "block";
+    }
+
+    // دالة حساب المعدل
+    function calculateAverage() {
+        const gradeSelects = document.querySelectorAll('.grade-select');
+        const nameInputs = document.querySelectorAll('.subject-input');
+        const specialtySelect = document.getElementById('specialty');
+        
+        let totalScore = 0;
+        let filledCount = 0;
+        let missingNames = false;
+
+        for (let i = 0; i < 12; i++) {
+            let gradeValue = parseFloat(gradeSelects[i].value);
+            let subjectName = nameInputs[i].value.trim();
+
+            // التحقق من تعبئة العلامة واكتساب النقاط
+            if (gradeValue >= 0) {
+                totalScore += gradeValue;
+                filledCount++;
+            }
+            
+            // التحقق من أن الطالب لم يترك اسم المادة فارغاً
+            if (subjectName === "") {
+                missingNames = true;
+            }
+        }
+
+        // تنبيهات التحقق من المدخلات
+        if (missingNames) {
+            alert("يرجى كتابة أسماء جميع المواد الـ 12 أولاً.");
+            return;
+        }
+        if (filledCount < 12) {
+            alert("يرجى تحديد العلامة (D أو M أو P) لجميع المواد الـ 12.");
+            return;
+        }
+
+        // الحساب: المجموع تقسيم 1200 ضرب 100 للنسبة المئوية
+        let average = (totalScore / 1200) * 100;
+
+        // إظهار النتائج للطباعة أو العرض
+        const resultBox = document.getElementById('resultBox');
+        const averageResult = document.getElementById('averageResult');
+        const resultSpecialty = document.getElementById('resultSpecialty');
+        
+        resultSpecialty.innerText = specialtySelect.value;
+        averageResult.innerText = average.toFixed(2) + "%";
+        resultBox.style.display = "block";
+        
+        // تمرير سلس للنتيجة
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
