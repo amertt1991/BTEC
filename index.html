@@ -181,21 +181,25 @@
     </div>
     
     <div class="section">
-        <div class="section-title">الخطوة الأولى: البيانات الدراسية للمستخدم</div>
+        <div class="section-title">قم باختيار التخصص والصف ثم حدد علامتك بجميع المواد</div>
         <div class="form-group">
             <div>
                 <label for="specialty">اختر التخصص الدراسي:</label>
                 <select id="specialty" onchange="handleSelectionChange()">
                     <option value="">-- اختر التخصص --</option>
-                    <option value="veh_tech">تكنولوجيا المركبات الكهربائية</option>
+                    <option value="veh_tech">هندسة تكنولوجيا المركبات</option>
                     <option value="elec_eng">الهندسة الكهربائية</option>
                     <option value="mech_eng">الهندسة الميكانيكية</option>
                     <option value="agri">الزراعة</option>
-                    <option value="const">الإنشاءات والبيئة العمرانية</option>
+                    <option value="const">الإنشاءات</option>
+                    <option value="it">تكنولوجيا المعلومات (IT)</option>
+                    <option value="business">الأعمال (Business)</option>
+                    <option value="art">الفن والتصميم (Art & Design)</option>
+                    <option value="beauty">الشعر والتجميل (Hair & Beauty)</option>
                 </select>
             </div>
             <div>
-                <label for="grade">اختر الصف الحالي:</label>
+                <label for="grade">اختر الصف الدراسي الحالي:</label>
                 <select id="grade" onchange="handleSelectionChange()">
                     <option value="">-- اختر الصف --</option>
                     <option value="11">الحادي عشر (الأول ثانوي)</option>
@@ -206,7 +210,7 @@
     </div>
 
     <div id="subjectsSection" class="section" style="display: none;">
-        <div class="section-title" id="subjectsTitle">الخطوة الثانية: حدد علامات المواد الدراسية الظاهرة أدناه</div>
+        <div class="section-title" id="subjectsTitle">الخطوة الثانية: حدد علامات المواد الدراسية المعروضة</div>
         <form id="btecForm">
             <div class="subjects-grid" id="subjectsContainer">
                 </div>
@@ -223,7 +227,7 @@
 </div>
 
 <script>
-    // قاعدة البيانات الرسمية بعد تعديل تخصص الإنشاءات بدقة
+    // قاعدة البيانات الرسمية الشاملة والمطابقة للملف بدقة بالغة
     const database = {
         veh_tech: {
             11: [
@@ -303,7 +307,60 @@
                 { name: "الرفع المساحي في البناء", hours: 60 },
                 { name: "تصميم البناء", hours: 60 }
             ],
-            12: [] // مصفوفة فارغة بناءً على البيانات المتوفرة للملف الحالي للإنشاءات
+            12: [] 
+        },
+        it: {
+            11: [
+                { name: "نظم تكنولوجيا المعلومات - الإستراتيجية والإدارة والبنية التحتية", hours: 120 },
+                { name: "تتطوير المواقع الالكترونية", hours: 60 },
+                { name: "تطوير تطبيقات الهاتف المحمول", hours: 60 },
+                { name: "تطوير ألعاب الحاسوب", hours: 60 },
+                { name: "الدعم الفني والإدارة لتكنولوجيا المعلومات", hours: 60 }
+            ],
+            12: [
+                { name: "الأمن السيبراني وإدارة الحوادث", hours: 120 },
+                { name: "مقدمة إلى الذكاء الاصطناعي (AI)", hours: 60 },
+                { name: "البرمجة", hours: 90 },
+                { name: "إدارة مشاريع تكنولوجيا المعلومات", hours: 90 }
+            ]
+        },
+        business: {
+            11: [
+                { name: "استكشاف الأعمال", hours: 90 },
+                { name: "البحث والتخطيط لحملة تسويقية", hours: 90 },
+                { name: "تمويل الأعمال", hours: 90 },
+                { name: "إدارة إحدى الفعاليات", hours: 90 }
+            ],
+            12: [
+                { name: "اتخاذ القرارات الخاصة بالأعمال", hours: 120 },
+                { name: "الموارد البشرية", hours: 60 },
+                { name: "مبادئ الإدارة", hours: 60 },
+                { name: "دراسة خدمة عملاء", hours: 60 },
+                { name: "أخلاقيات العمل", hours: 60 }
+            ]
+        },
+        art: {
+            11: [
+                { name: "تطوير المهارات", hours: 270 },
+                { name: "الاستجابة لأحد المواجز", hours: 90 }
+            ],
+            12: [] 
+        },
+        beauty: {
+            11: [
+                { name: "تدريب صالون التجميل المهني", hours: 60 },
+                { name: "الأساليب المتقدمة للعناية بالأظافر وتجميلها", hours: 60 },
+                { name: "الصحة والتعافي", hours: 60 },
+                { name: "المكياج الإبداعي وفن الحناء", hours: 60 },
+                { name: "علاجات البشرة المتقدمة", hours: 60 },
+                { name: "تلوين وتفتيح الشعر وتقنية الهايلايت", hours: 60 }
+            ],
+            12: [
+                { name: "التدليك والعلاج بالروائح العطرية", hours: 90 },
+                { name: "قص الشعر والتصفيف", hours: 90 },
+                { name: "تقنيات المساج المتقدمة", hours: 90 },
+                { name: "بدء مشروع وإدارته", hours: 90 }
+            ]
         }
     };
 
@@ -321,21 +378,22 @@
             return;
         }
 
+        if (grade === "12" && (spec === "const" || spec === "art")) {
+            container.innerHTML = "<p style='color:#e74c3c; text-align:center; font-weight:bold; padding: 10px;'>عذراً، هذا التخصص لا يتوفر له خطة دراسية للصف الثاني عشر (يتم احتساب علاماته من خلال الصف الحادي عشر فقط).</p>";
+            document.getElementById('subjectsTitle').innerText = "تنبيه النظام";
+            subSection.style.display = "block";
+            return;
+        }
+
         container.innerHTML = "";
         let listToShow = [];
 
         if (grade === "11") {
             listToShow = database[spec][11];
-            document.getElementById('subjectsTitle').innerText = "الخطوة الثانية: حدد علامات مواد الصف الحادي عشر المعتمدة فقط";
+            document.getElementById('subjectsTitle').innerText = "الخطوة الثانية: حدد علامات مواد الصف الحادي عشر المعتمدة";
         } else if (grade === "12") {
             listToShow = [...database[spec][11], ...database[spec][12]];
             document.getElementById('subjectsTitle').innerText = "الخطوة الثانية: حدد علامات مواد الصفين (الحادي عشر والثاني عشر معاً)";
-        }
-
-        if (listToShow.length === 0) {
-            container.innerHTML = "<p style='color:red; text-align:center; font-weight:bold;'>لا توجد مواد مضافة حالياً لهذه الخيارات.</p>";
-            subSection.style.display = "block";
-            return;
         }
 
         listToShow.forEach((sub, i) => {
@@ -362,7 +420,7 @@
         const selects = document.querySelectorAll('.grade-select');
         const grade = document.getElementById('grade').value;
         
-        if(selects.length === 0) return;
+        if (selects.length === 0) return;
 
         let totalWeightedScore = 0;
         let totalHours = 0;
